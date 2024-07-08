@@ -2,9 +2,9 @@
 import os
 from flask import Flask, render_template, request
 from dotenv import load_dotenv
-from langchain.embed_text_chunks import fetch_pdf_content, split_documents
-from langchain.vectorstore import create_vector_store, SimpleRetriever
-from langchain.llm_chain import invoke_with_history
+from langchainn.embed_text_chunks import fetch_pdf_content, split_documents
+from langchainn.vectorstore import create_vector_store, SimpleRetriever
+from langchainn.llm_chain import invoke_with_history
 
 # Load environment variables
 load_dotenv()
@@ -34,8 +34,9 @@ def index():
     global chat_history
     if request.method == "POST":
         user_question = request.form.get("question")
-        answer, sources, chat_history = invoke_with_history(user_question, retriever, chat_history)
-        return render_template("index.html", response=answer, sources=sources)
+        if user_question:
+            answer, sources, chat_history = invoke_with_history(user_question, retriever, chat_history)
+            return render_template("index.html", response=answer, sources=sources)
 
     return render_template("index.html", response=None)
 
