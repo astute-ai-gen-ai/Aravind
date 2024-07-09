@@ -3,9 +3,21 @@ from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain_core.documents import Document
 #from langchain.schema import Document
 import fitz  # PyMuPDF
+import requests
 
 # Initialize the embeddings
 embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
+
+# Function to fetch content from API endpoint
+def fetch_content_from_api(api_url):
+    response = requests.get(api_url)
+    response.raise_for_status()  # Raise an error for bad responses
+    data = response.json()
+    documents = []
+    for item in data:
+        content = f"Title: {item['title']}\nAuthor: {item['author']}\nDate: {item['date_created']}\n\n{item['content']}"
+        documents.append(Document(page_content=content, metadata={"source": item["title"]}))
+    return documents
 
 # Function to fetch content from a PDF
 def fetch_pdf_content(file_path):
