@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document Question Answering</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+
+<body>
+    <h1>Ask Your Question</h1>
+    <form action="/" method="post">
+        <input type="text" name="question" placeholder="Type your question here">
+        <button type="submit">Submit</button>
+    </form>
+    {% if response %}
+    <h2>Response:</h2>
+    <p>{{ response }}</p>
+    <h3>Sources:</h3>
+    <ul>
+        {% for source in sources %}
+        <li>{{ source }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+</body>
+
+</html>
